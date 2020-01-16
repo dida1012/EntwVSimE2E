@@ -164,6 +164,7 @@ describe('Simulate Group 6', () => {
                         await driver.switchTo().defaultContent();
                         await driver.switchTo().frame(1);
                         await driver.switchTo().frame(1);
+                        sleep.sleep(1);
                         let text = await driver.findElement(By.xpath("/html/body/p/table/tbody/tr[2]/td")).getText();
                         expect(text).to.eql("Hier können Sie die Ergebnisse von Periode "+(file)+" sehen.");
 
