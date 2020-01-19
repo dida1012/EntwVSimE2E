@@ -13,10 +13,11 @@ let file = 1;
 const urlAdmin = 'https://www.iwi.hs-karlsruhe.de/scs6/scsverwaltung/frameset.jsp'
 const urlHome = 'https://www.iwi.hs-karlsruhe.de/scs6/index.jsp'
 
-describe('Simulate Group 6', () => {
+describe('Simulate Group 6', function() {
+    this.retries(4);
     const driver = new Builder().forBrowser('firefox').build();
 
-    it('should go to scs and delete the mod (init purge)', async () => {
+    it('should go to scs and delete the mod (init purge)', async function() {
         try{
             // await driver.manage().setTimeouts({implicit: 100000, pageLoad: 100000, script: 100000});        
             //open admin page
@@ -42,15 +43,9 @@ describe('Simulate Group 6', () => {
         } catch{
             console.log("TestModerator was not found. Execution continues...")
         }
-
-        //logout
-        await driver.switchTo().defaultContent();
-        await driver.switchTo().frame(0);
-        await driver.findElement(By.xpath("//*[contains(text(),'Logout')]")).click();
-        
     });
 
-    it('should go to scs and create a mod', async () => {
+    it('should go to scs and create a mod', async function() {
        //open admin page
        await driver.switchTo().defaultContent();
        await driver.get(urlAdmin);
@@ -76,14 +71,9 @@ describe('Simulate Group 6', () => {
         await driver.findElement(By.xpath("/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[5]/td[2]/input[1]")).clear();
         await driver.findElement(By.xpath("/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[5]/td[2]/input[1]")).sendKeys("4200");
         await driver.findElement(By.xpath("/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[7]/td[2]/input")).click();
-
-        //logout
-        await driver.switchTo().defaultContent();
-        await driver.switchTo().frame(0);
-        await driver.findElement(By.xpath("//*[contains(text(),'Logout')]")).click();
     });
 
-    it('should go to scs and create a new game and group', async () => {
+    it('should go to scs and create a new game and group', async function() {
         //open admin page
         await driver.switchTo().defaultContent();
         await driver.get(urlAdmin);
@@ -117,16 +107,11 @@ describe('Simulate Group 6', () => {
         await driver.findElement(By.xpath("/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[1]/td[2]/input")).sendKeys("testGroup");
         await driver.findElement(By.xpath("/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input")).sendKeys("testGroup");
         await driver.findElement(By.xpath("/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[6]/td[2]/input")).click();
-
-        //logout
-        await driver.switchTo().defaultContent();
-        await driver.switchTo().frame(0);
-        await driver.findElement(By.xpath("//*[contains(text(),'Logout')]")).click();
     });
     
     //send all XML Files
     for(var i = 1;i<8;++i){
-        it('should go to scs and send the xml_'+i, async () => {
+        it('should go to scs and send the xml_'+i, async function() {
             let value = true;
             //go to home
             await driver.switchTo().defaultContent();
@@ -167,11 +152,6 @@ describe('Simulate Group 6', () => {
                         sleep.sleep(5);
                         let text = await driver.findElement(By.xpath("/html/body/p/table/tbody/tr[2]/td")).getText();
                         expect(text).to.eql("Hier können Sie die Ergebnisse von Periode "+(file)+" sehen.");
-
-                        //logout
-                        await driver.switchTo().defaultContent();
-                        await driver.switchTo().frame(0);
-                        await driver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/a[10]")).click();
                         ++file;
                     }
                 }); 
@@ -179,7 +159,30 @@ describe('Simulate Group 6', () => {
         });
     }
    
-    after(async () => driver.quit());
+    after(async function() {
+        driver.quit()
+    });
 
-    beforeEach(async () => console.log('Führe Test aus mit Datei '+file));
+    beforeEach(async function() {
+        console.log('Führe Test aus mit Datei '+file);
+    });
+
+    afterEach(async function() {
+        console.log('Logout');
+         //logout
+         await driver.switchTo().defaultContent();
+         await driver.switchTo().frame(0);
+
+         console.log(this.currentTest.title);
+         console.log('should go to scs and send the xml_'+(file-1));
+
+
+         if (this.currentTest.title=='should go to scs and send the xml_'+(file-1)){
+            await driver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/a[10]")).click();
+         } else{
+            await driver.findElement(By.xpath("//*[contains(text(),'Logout')]")).click();
+         }
+         
+    });
+
 });
