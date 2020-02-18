@@ -10,8 +10,8 @@ let file = 1;
 
 // const urlAdmin = 'http://localhost:8080/scs/scsverwaltung/frameset.jsp'
 // const urlHome = 'http://localhost:8080/scs/index.jsp'
-const urlAdmin = 'https://www.iwi.hs-karlsruhe.de/scs6/scsverwaltung/frameset.jsp'
-const urlHome = 'https://www.iwi.hs-karlsruhe.de/scs6/index.jsp'
+const urlAdmin = 'https://www.iwi.hs-karlsruhe.de/scs9/scsverwaltung/frameset.jsp'
+const urlHome = 'https://www.iwi.hs-karlsruhe.de/scs9/index.jsp'
 
 describe('Simulate Group 7', function() {
     this.retries(4);
