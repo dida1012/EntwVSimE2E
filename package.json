@@ -15,7 +15,7 @@
     "allure-commandline": "^2.13.0",
     "chai": "^4.2.0",
     "geckodriver": "^1.19.1",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "mocha-allure-reporter": "^1.4.0",
     "selenium-webdriver": "^4.0.0-alpha.5",
     "sleep": "^6.1.0"
